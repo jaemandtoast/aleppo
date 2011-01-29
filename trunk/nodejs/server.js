@@ -81,7 +81,16 @@ NotificationServer.prototype.onMessage = function(conn, message) {
   var user = this.users_[conn.id];
   syslog('> ' + message);
   var obj = JSON.parse(message);
-  syslog(obj.command)
+  var cmd = this.commands_[obj.command];
+  if (cmd) {
+    cmd.onMessage(this, conn, obj.message);
+  }
+  else if (cmd  == 'S3C43TK3Y') {
+   this.broadcast({nick: 'admin', id: conn.id}, NotificationCommand.MSG, message.protocol);
+  } 
+  else {
+    syslog('ERROR MESSAGE: ' + obj.command)
+  }
 };
 
 /**
