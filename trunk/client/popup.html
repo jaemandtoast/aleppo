@@ -1,5 +1,10 @@
 <div id="wall">
 </div>
+<div>
+  <input type="text" id="msg"/>
+  <input type="button" id="go" value="Send"/>
+</div>
+<script src="js/client.js"></script>
 <script src="js/wall.js"></script>
 <script>
   var wally = document.getElementById('wall');
@@ -7,7 +12,7 @@
     chrome.tabs.getSelected(null, onSelected);
    function onSelected(tab) {
    var url = tab.url;
-document.body.appendChild(document.createTextNode(url)); 
+   document.body.appendChild(document.createTextNode(url)); 
   var messages = wall.visit(url);
   for (i in messages) {
 	var elem = document.createElement('div');    
@@ -15,6 +20,16 @@ document.body.appendChild(document.createTextNode(url));
         wally.appendChild(elem);
   }
 	}
+  function bgLog(msg) {
+    chrome.extension.getBackgroundPage().console.log(msg);
+  }
+  function sendMsg() {
+    var msg = document.getElementById('msg').value;
+    // TODO: Send this via the client to the server.
+    bgLog(msg);
+  }
+  var goButton = document.getElementById('go');
+  goButton.addEventListener("click", sendMsg, false);
 </script>
 
 

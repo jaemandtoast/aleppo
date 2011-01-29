@@ -18,3 +18,5 @@ if (currVersion != prevVersion) {
   settings.version = currVersion;
 }
 
+var client = new AleppoClient();
+client.start();
