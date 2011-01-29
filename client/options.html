@@ -1,12 +1,12 @@
 
-d><title>My Test Extension Options</title></head>
+<head><title>Aleppo Settings</title></head>
 <script type="text/javascript">
 
 // Saves options to localStorage.
 function save_options() {
-  var select = document.getElementById("color");
-  var color = select.children[select.selectedIndex].value;
-  localStorage["favorite_color"] = color;
+  localStorage['server'] = document.getElementById("server").value;
+  localStorage['port'] = document.getElementById("port").value;
+  localStorage['name'] = document.getElementById("name").value;
 
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
@@ -18,17 +18,15 @@ function save_options() {
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-  var favorite = localStorage["favorite_color"];
-  if (!favorite) {
-    return;
+  if (localStorage['server']) {
+    document.getElementById("server").value = localStorage['server'];
+    document.getElementById("port").value = localStorage['port'];
+    document.getElementById("name").value = localStorage['name'];
   }
-  var select = document.getElementById("color");
-  for (var i = 0; i < select.children.length; i++) {
-    var child = select.children[i];
-    if (child.value == favorite) {
-      child.selected = "true";
-      break;
-    }
+  else {
+    document.getElementById("server").value = 'localhost';
+    document.getElementById("port").value = 8080;
+    document.getElementById("name").value = 'Anonymous';
   }
 }
 
@@ -36,13 +34,17 @@ function restore_options() {
 
 <body onload="restore_options()">
 
-Favorite Color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
+Server:
+<input type="text" id="server">
+<br>
+
+Port:
+<input type="text" id="port">
+<br>
+
+Name: 
+<input type="text" id="name">
+<br>
 
 <br>
 <button onclick="save_options()">Save</button>

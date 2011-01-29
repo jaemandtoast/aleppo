@@ -1,5 +1,5 @@
 AleppoClient = function() {
-  this.ws = new WebSocket('ws://192.75.139.249:8080');
+  this.ws = new WebSocket('ws://' + localStorage['server']+ ':' + localStorage['port']);
 }
 
 AleppoClient.prototype.start = function() {
