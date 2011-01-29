@@ -1,0 +1,20 @@
+<div id="wall">
+</div>
+<script src="js/wall.js"></script>
+<script>
+  var wally = document.getElementById('wall');
+  var url = 'iiiiii';
+    chrome.tabs.getSelected(null, onSelected);
+   function onSelected(tab) {
+   var url = tab.url;
+document.body.appendChild(document.createTextNode(url)); 
+  var messages = wall.visit(url);
+  for (i in messages) {
+	var elem = document.createElement('div');    
+        elem.innerHTML = messages[i];
+        wally.appendChild(elem);
+  }
+	}
+</script>
+
+
