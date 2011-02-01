@@ -21,6 +21,16 @@ AleppoClient.prototype.onServerError = function() {
   console.log("Server error");
 };
 
-AleppoClient.prototype.onMessage = function() {
+AleppoClient.prototype.onMessage = function(response) {
+  console.log("Message received");
+  var response = JSON.parse(response);
+  console.log(response.wall);
+
+};
+
+
+
+AleppoClient.prototype.send= function(json) {
+  this.ws.send(JSON.stringify(json));
   console.log("Message received");
 };
