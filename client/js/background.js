@@ -20,3 +20,19 @@ if (currVersion != prevVersion) {
 
 var client = new AleppoClient();
 client.start();
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  if (tab.status=='complete') {
+
+    var url = tab.url;
+    localStorage['url'] = url;
+    client.send({
+      command: 'JOIN',
+      message: {
+        nick: localStorage['name'],
+        url: url
+      }
+    });
+  }
+});
+
+
