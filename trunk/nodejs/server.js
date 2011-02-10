@@ -12,20 +12,24 @@ NotificationServer = function(port) {
   this.port_ = port;
   this.server_ = ws.createServer();
   this.users_ = {};
-  this.log_ = [];
+  this.log_ = {};
   this.commands_ = {};
+  this.walls_ = {};
   this.init();
 };
 
 /**
- * Initialize the listeners to handle the various notifications..
+ * Initialize the listeners to handle the various notifications.
  */
 NotificationServer.prototype.init = function() {
-  
   this.commands_ = {
     'NICK': NickCommand,
     'MSG': MsgCommand,
-    'NICKLIST': NicklistCommand 
+    'NICKLIST': NicklistCommand,
+    'JOIN': JoinCommand,
+    'LEAVE': LeaveCommand,
+    'SAY': SayCommand,
+    'VISIT': VisitCommand
   };
   
   this.server_.addListener('request', this.onWebRequest.bind(this));
@@ -63,15 +67,9 @@ NotificationServer.prototype.onConnection = function(conn) {
   // Store this user to the map so we can do quick retreivals.
   this.users_[conn.id] = {
     nick: 'chromie_' + conn.id,
-    data: {
-      message_count: 0
-    }
+    url: null,
+    con: conn
   };
-
-  // Spit out all the previous log to the user when they connected.
-  for (var i = 0; i < this.log_.length; i++) {
-//    conn.send(this.log_[i]);
-  }
 };
 
 /**
@@ -153,3 +151,15 @@ NotificationServer.prototype.send = function(conn, message, command, protocol) {
     message: message
   }));
 };
+
+// Retrieve the text for a wall given  a URL.
+NotificationServer.prototype.getWall = function(url) {
+  var msgs = this.log_[url];
+  var text = '';
+  if (msgs && msgs.length) {
+    for (var i = 0; i < msgs.length; i++) {
+      text += msgs[i] + '\n';
+    }
+  }
+  return text;
+}
