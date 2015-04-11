@@ -1,0 +1,1 @@
+Chrome extension to allow chatting in any page.
